@@ -10,14 +10,16 @@ if [[ `cat /etc/*-release | head -n 1 | awk '{print $1}'` =~ Ubuntu ]]; then
    apt-get install ceilometer-agent-compute -y --force-yes
 
    apt-get install patch -y --force-yes
+
+   # Fix for 5.0 only
    cd /usr/lib/python2.7/dist-packages/ceilometer/api/
    patch -i $CUR_DIR/diff_init __init__.py
    patch -i $CUR_DIR/diff_app app.py
-
    cd /usr/share/pyshared/ceilometer/api/
    patch -i $CUR_DIR/diff_init __init__.py
    patch -i $CUR_DIR/diff_app app.py
 
+   # Fix for 5.0 and 5.1
    cd /usr/share/pyshared/ceilometer/compute/virt/vmware/
    patch -i $CUR_DIR/diff_vsphere_operations vsphere_operations.py
    cd /usr/lib/python2.7/dist-packages/ceilometer/compute/virt/vmware/
@@ -28,10 +30,13 @@ else
    yum install openstack-ceilometer-compute -y
 
    yum install patch -y
+
+   # Fix for 5.0 only
    cd /usr/lib/python2.6/site-packages/ceilometer/api/
    patch -i $CUR_DIR/diff_init __init__.py
    patch -i $CUR_DIR/diff_app app.py
 
+   # Fix for 5.0 and 5.1
    cd /usr/lib/python2.6/site-packages/ceilometer/compute/virt/vmware/
    patch -i $CUR_DIR/diff_vsphere_operations vsphere_operations.py
 fi
