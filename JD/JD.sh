@@ -7,8 +7,9 @@ CONF="/etc/ceilometer/ceilometer.conf"
 
 if [[ `cat /etc/*-release | head -n 1 | awk '{print $1}'` =~ Ubuntu ]]; then
    # If Ubuntu
-   apt-get install openstack-ceilometer-compute -y --force-yes
+   apt-get install ceilometer-agent-compute -y --force-yes
 
+   apt-get install patch -y --force-yes
    cd /usr/lib/python2.7/dist-packages/ceilometer/api/
    patch -i $CUR_DIR/diff_init __init__.py
    patch -i $CUR_DIR/diff_app app.py
@@ -26,6 +27,7 @@ else
    # If CentOS
    yum install openstack-ceilometer-compute -y
 
+   yum install patch -y
    cd /usr/lib/python2.6/site-packages/ceilometer/api/
    patch -i $CUR_DIR/diff_init __init__.py
    patch -i $CUR_DIR/diff_app app.py
