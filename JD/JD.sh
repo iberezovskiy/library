@@ -47,7 +47,7 @@ sed -i "s/#hypervisor_inspector=.*/hypervisor_inspector=vsphere/g" $CONF
 
 # Set log levels
 default_log_levels="amqp=WARN,amqplib=WARN,boto=WARN,qpid=WARN,sqlalchemy=WARN,suds=INFO,iso8601=WARN,requests.packages.urllib3.connectionpool=WARN,oslo.vmware=WARN"
-sed -i "s/default_log_levels=.*/default_log_levels=$default_log_levels/g" $CONF
+sed -i "s/#default_log_levels=.*/default_log_levels=$default_log_levels/g" $CONF
 
 # Restart ceilometer services
 for i in $(ls /etc/init.d/ | grep ceilometer);
