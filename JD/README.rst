@@ -48,33 +48,35 @@ Ubuntu and Fuel 5.0:
 
 .. sourcecode:: bash
 
-  /usr/lib/python2.7/dist-packages/ceilometer/api/__init__.py
-  /usr/share/pyshared/ceilometer/api/__init__.py
-  /usr/lib/python2.7/dist-packages/ceilometer/api/app.py
-  /usr/share/pyshared/ceilometer/api/app.py
-  /usr/share/pyshared/ceilometer/compute/virt/vmware/vsphere_operations.py
-  /usr/lib/python2.7/dist-packages/ceilometer/compute/virt/vmware/vsphere_operations.py
+  patch -i diff_init /usr/lib/python2.7/dist-packages/ceilometer/api/__init__.py
+  patch -i diff_init /usr/share/pyshared/ceilometer/api/__init__.py
+  patch -i diff_app /usr/lib/python2.7/dist-packages/ceilometer/api/app.py
+  patch -i diff_app /usr/share/pyshared/ceilometer/api/app.py
+  patch -i diff_vsphere_operations /usr/share/pyshared/ceilometer/compute/virt/vmware/vsphere_operations.py
+  patch -i diff_vsphere_operations/usr/lib/python2.7/dist-packages/ceilometer/compute/virt/vmware/vsphere_operations.py
 
 Ubuntu and Fuel 5.1:
 
 .. sourcecode:: bash
 
-  /usr/share/pyshared/ceilometer/compute/virt/vmware/vsphere_operations.py
-  /usr/lib/python2.7/dist-packages/ceilometer/compute/virt/vmware/vsphere_operations.py
+  patch -i diff_vsphere_operations /usr/share/pyshared/ceilometer/compute/virt/vmware/vsphere_operations.py
+  patch -i diff_vsphere_operations /usr/lib/python2.7/dist-packages/ceilometer/compute/virt/vmware/vsphere_operations.py
 
 Centos and Fuel 5.0:
 
 .. sourcecode:: bash
 
-  /usr/lib/python2.6/site-packages/ceilometer/api/__init__.py
-  /usr/lib/python2.6/site-packages/ceilometer/api/app.py
-  /usr/lib/python2.6/site-packages/ceilometer/compute/virt/vmware/vsphere_operations.py
+  patch -i diff_init /usr/lib/python2.6/site-packages/ceilometer/api/__init__.py
+  patch -i diff_app /usr/lib/python2.6/site-packages/ceilometer/api/app.py
+  patch -i diff_vsphere_operations /usr/lib/python2.6/site-packages/ceilometer/compute/virt/vmware/vsphere_operations.py
 
 Centos and Fuel 5.1:
 
 .. sourcecode:: bash
 
-  /usr/lib/python2.6/site-packages/ceilometer/compute/virt/vmware/vsphere_operations.py
+  patch -i diff_vsphere_operations /usr/lib/python2.6/site-packages/ceilometer/compute/virt/vmware/vsphere_operations.py
+
+Patches (diff_init, diff_app and diff_vsphere_operations) could be found in https://github.com/iberezovskiy/library/tree/master/JD
 
 Then you need to change ceilometer polling interval:
 
