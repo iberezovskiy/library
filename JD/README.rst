@@ -84,6 +84,12 @@ Then you need to change ceilometer polling interval:
 
   sed -i "s/600/60/g"  /etc/ceilometer/pipeline.yaml
 
+Fix evaluating interval:
+
+.. sourcecode:: bash
+
+  sed -i "s/#evaluation_interval=.*/evaluation_interval=60/g" /etc/ceilometer/ceilometer.conf
+
 Set hypervisor inspector as vsphere
 
 .. sourcecode:: bash
