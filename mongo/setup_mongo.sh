@@ -1,6 +1,6 @@
 primary=${primary:-false}
 node_ip=${node_ip:-"127.0.0.1"}
-mongo_hosts=${mongo_hosts:-"'127.0.0.1' "}
+mongo_hosts=${mongo_hosts:-""}
 for i in $mongo_hosts; do
   if [ -z "$hosts" ]; then
     hosts=$i
