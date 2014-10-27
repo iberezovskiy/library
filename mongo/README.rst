@@ -22,4 +22,4 @@ Need to copy setup_mongo.pp and setup_mongo.sh files on slaves. Then:
 
 .. sourcecode:: bash
 
-  primary=false node_ip=172.18.168.1 mongo_hosts="'172.18.168.1'" bash setup_mongo.sh
+  primary=true node_ip=172.18.168.1 mongo_hosts="'172.18.168.1'" bash setup_mongo.sh
