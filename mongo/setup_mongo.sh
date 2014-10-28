@@ -41,3 +41,11 @@ for i in $mongo_hosts; do
 done
 
 cp tmp.pp setup_mongo.pp
+
+password=$(tr -dc A-Za-z0-9 < /dev/urandom | head -c ${1:-8} | xargs)
+
+mongo -uadmin -pceilometer admin --eval "var db = db.getSiblingDB('ceilometer'); db.addUser(
+{ user: 'ceilometer',
+  pwd: '$password',
+  roles: [ 'clusterAdmin', 'readAnyDatabase', 'userAdminAnyDatabase', 'dbAdmin', 'readWrite', 'root' ],
+})"
