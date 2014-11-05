@@ -100,8 +100,6 @@ apt-get install openssh-server -y
 
 mkdir ~/.ssh
 
-echo -e "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDCPWH4REJVD121pUCyXPR1lwh0U6Lh5cS9hyq6Ok15tuJkaKKN1Nzvy7uDTUq1RhF32Ep3BwNTk07cuY2znhUuYlDWaovmpXzj1KWnb5LjWqjlGVRq2trASP0HpzEhrSwhQ2Mhln/32On5iKi2TYUaz18cKllsseXzTTfSp9G263fyVnxew2SpbiJPnFF5v4URS0a7bJUaAc7F5U9rXo0olkgr2QBqafR3tNMXqfCpYi60tX8FckBhXBsYVp+X79gLlcyuSV6Wf7MdjwsjbM9PG7+ozYq6y8t08CRf34er5WiG94U8DYWxim7z2GtHZSslqxI5GiKPiqUpqIiPnRiX dmakogon@dmakogon-pc" > ~/.ssh/authorized_keys
-
 install-packages augeas-tools
 sed -i "s/disable_root: true/disable_root: false/" /etc/cloud/cloud.cfg
 augtool -s set /files/etc/ssh/sshd_config/PasswordAuthentication yes
