@@ -1,0 +1,59 @@
+#!/bin/bash
+
+set -e
+
+function common_conf_setup() {
+  local file=$1
+  touch $1
+  echo -e "[DEFAULT]\n" >> $1
+  setup_logging $1
+  iniset $file DEFAULT rabbit_password $RABBIT_PASSWORD
+  iniset $file DEFAULT sql_connection $TROVE_DATABASE
+  iniset $file DEFAULT use_syslog False
+  iniset $file DEFAULT debug True
+  iniset $file DEFAULT swift_url $SWIFT_URL
+  iniset $file DEFAULT cinder_url $CINDER_URL
+  iniset $file DEFAULT nova_compute_url $NOVA_URL
+}
+
+function iniset() {
+  local file=$1
+  local section=$2
+  local option=$3
+  local value=$4
+  if ! grep -q "^\[$section\]" "$file"; then
+    # Add section at the end
+     echo -e "\n[$section]" >>"$file"
+  fi
+  if ! ini_has_option "$file" "$section" "$option"; then
+    # Add it
+    sed -i -e "/^\[$section\]/ a\\
+    $option = $value
+    " "$file"
+  else
+    # Replace it
+    sed -i -e "/^\[$section\]/,/^\[.*\]/ s|^\($option[ \t]*=[ \t]*\).*$|\1$value|" "$file"
+  fi
+}
+
+function setup_logging() {
+
+  local file=$1
+  iniset $file DEFAULT logging_exception_prefix "%(color)s%(asctime)s.%(msecs)03d TRACE %(name)s %(instance)s"
+  iniset $file DEFAULT logging_debug_format_suffix "from (pid=%(process)d)"
+  iniset $file DEFAULT logging_default_format_string "%(asctime)s.%(msecs)03d %(color)s%(levelname)s %(name)s [-%(color)s] %(instance)s%(color)s%(message)s"
+  iniset $file DEFAULT logging_context_format_string "%(asctime)s.%(msecs)03d %(color)s%(levelname)s %(name)s [%(request_id)s %(user)s %(tenant)s%(color)s] %(instance)s%(color)s%(message)s"
+}
+
+function ini_has_option {
+    local xtrace=$(set +o | grep xtrace)
+    set +o xtrace
+    local file=$1
+    local section=$2
+    local option=$3
+    local line
+
+    line=$(sed -ne "/^\[$section\]/,/^\[.*\]/ { /^$option[ \t]*=/ p; }" "$file")
+    $xtrace
+    [ -n "$line" ]
+}

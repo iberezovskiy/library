@@ -1,0 +1,107 @@
+#!/bin/bash
+
+set -eux
+
+source  $(dirname $0)/functions
+
+sudo apt-get update
+sudo apt-get upgrade -y
+
+apt-get install git -y
+
+git clone https://github.com/openstack/trove
+
+wget -P /tmp/ https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py
+python /tmp/ez_setup.py
+wget -P /tmp/ https://raw.github.com/pypa/pip/master/contrib/get-pip.py
+python /tmp/get-pip.py
+
+
+apt-get install libmysqlclient-dev python-dev libxml2-dev libxslt1-dev gcc python-lxml -qy
+cd trove && python setup.py install
+cd -
+
+export TROVE_CONF_DIR=/etc/trove
+export TROVE_API_CONF=$TROVE_CONF_DIR/trove.conf
+export TROVE_TM_CONF=$TROVE_CONF_DIR/trove-taskmanager.conf
+export TROVE_COND_CONF=$TROVE_CONF_DIR/trove-conductor.conf
+export TROVE_GUEST_CONF=$TROVE_CONF_DIR/trove-guestagent.conf
+export TROVE_API_PASTE_INI=$TROVE_CONF_DIR/api-paste.ini
+export TROVE_LOG_DIR="/tmp/trove/logs/"
+export KEYSTONE_AUTH_PROTOCOL="http"
+export KEYSTONE_AUTH_HOST="localhost"
+export KEYSTONE_AUTH_PORT="5000"
+export IDENTITY_API_VERSION="2"
+export TROVE_AUTH_ENDPOINT=$KEYSTONE_AUTH_PROTOCOL://$KEYSTONE_AUTH_HOST:$KEYSTONE_AUTH_PORT//v$IDENTITY_API_VERSION
+export SWIFT_URL="http://localhost:8080/v1/AUTH_"
+export NOVA_URL="http://localhost:8774/v2"
+export CINDER_URL="http://localhost:8776/v1"
+export TROVE_DATABASE="mysql://root:passwd@localhost/trove?charset=utf8"
+export RABBIT_HOST="10.0.0.1"
+export RABBIT_PASSWORD="f7999d1955c5014aa32c"
+
+mkdir -p $TROVE_CONF_DIR
+mkdir -p $TROVE_LOG_DIR
+
+common_conf_setup $TROVE_API_CONF
+iniset $TROVE_API_CONF DEFAULT add_addresses True
+cp trove/etc/trove/api-paste.ini $TROVE_API_PASTE_INI
+iniset $TROVE_API_PASTE_INI filter:authtoken auth_host $KEYSTONE_AUTH_HOST
+iniset $TROVE_API_PASTE_INI filter:authtoken auth_port $KEYSTONE_AUTH_PORT
+iniset $TROVE_API_PASTE_INI filter:authtoken auth_protocol $KEYSTONE_AUTH_PROTOCOL
+#iniset $TROVE_API_PASTE_INI filter:authtoken cafile $KEYSTONE_SSL_CA
+#iniset $TROVE_API_PASTE_INI filter:authtoken admin_tenant_name $SERVICE_TENANT_NAME
+#iniset $TROVE_API_PASTE_INI filter:authtoken admin_user trove
+#iniset $TROVE_API_PASTE_INI filter:authtoken admin_password $SERVICE_PASSWORD
+#iniset $TROVE_API_PASTE_INI filter:authtoken signing_dir $TROVE_AUTH_CACHE_DIR
+
+
+export HOME="/root"
+install -D -g root -o root -m 0755 $(dirname $0)/trove-api-service.sh $HOME
+ln -s $HOME/trove-api-service.sh /etc/init.d/trove-api
+update-rc.d trove-api defaults
+
+#Taskmanager Service deployment
+common_conf_setup $TROVE_TM_CONF
+iniset $TROVE_TM_CONF DEFAULT nova_proxy_admin_tenant_name trove
+iniset $TROVE_TM_CONF DEFAULT nova_proxy_admin_user radmin
+iniset $TROVE_TM_CONF DEFAULT taskmanager_manager trove.taskmanager.manager.Manager
+
+install -D -g root -o root -m 0755 $(dirname $0)/trove-tm-service.sh $HOME
+ln -s $HOME/trove-tm-service.sh /etc/init.d/trove-taskmanager
+update-rc.d trove-taskmanager defaults
+
+#Conductor Service deployment
+common_conf_setup $TROVE_COND_CONF
+iniset $TROVE_COND_CONF DEFAULT control_exchange "trove"
+iniset $TROVE_COND_CONF DEFAULT trove_auth_url $TROVE_AUTH_ENDPOINT
+
+install -D -g root -o root -m 0755 $(dirname $0)/trove-cond-service.sh $HOME
+ln -s $HOME/trove-cond-service.sh /etc/init.d/trove-conductor
+update-rc.d trove-conductor defaults
+
+export DEBIAN_FRONTEND=noninteractive
+
+apt-get install open-vm-tools -y
+
+apt-get install python-guestfs -y --force-yes
+apt-get install libguestfs-tools  -y --force-yes
+
+wget http://packages.vmware.com/tools/keys/VMWARE-PACKAGING-GPG-RSA-KEY.pub
+apt-key add VMWARE-PACKAGING-GPG-RSA-KEY.pub
+echo -e "deb http://packages.vmware.com/tools/esx/5.0u2/ubuntu precise main" > /etc/apt/sources.list.d/vmware.list
+apt-get update
+#apt-get install vmware-tools-esx-nox -y
+kernel=$(uname -r | awk  -F "-" '{print $3}')
+#apt-get install vmware-tools-esx-kmods-$kernel -y
+apt-get install vmware-tools-esx-kmods.*-$kernel -y
+
+apt-get install openssh-server -y
+
+mkdir ~/.ssh
+
+echo -e "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDCPWH4REJVD121pUCyXPR1lwh0U6Lh5cS9hyq6Ok15tuJkaKKN1Nzvy7uDTUq1RhF32Ep3BwNTk07cuY2znhUuYlDWaovmpXzj1KWnb5LjWqjlGVRq2trASP0HpzEhrSwhQ2Mhln/32On5iKi2TYUaz18cKllsseXzTTfSp9G263fyVnxew2SpbiJPnFF5v4URS0a7bJUaAc7F5U9rXo0olkgr2QBqafR3tNMXqfCpYi60tX8FckBhXBsYVp+X79gLlcyuSV6Wf7MdjwsjbM9PG7+ozYq6y8t08CRf34er5WiG94U8DYWxim7z2GtHZSslqxI5GiKPiqUpqIiPnRiX dmakogon@dmakogon-pc" > ~/.ssh/authorized_keys
+
+install-packages augeas-tools
+sed -i "s/disable_root: true/disable_root: false/" /etc/cloud/cloud.cfg
+augtool -s set /files/etc/ssh/sshd_config/PasswordAuthentication yes
