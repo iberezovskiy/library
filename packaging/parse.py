@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 
-import sys
 import urllib
-import pip
-import os
 import requirements
 
 

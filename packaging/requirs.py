@@ -1,4 +1,4 @@
-import sys
+import parse as p
 import collections
 
 class Requirements():
@@ -18,4 +18,4 @@ class Requirements():
         self.pars.reqs = collections.OrderedDict(sorted(self.pars.reqs.items()))
 
 if __name__ == "__main__":
-    requirements = Requirements('https://raw.githubusercontent.com/', 'openstack/ceilometer/', 'master/', 'requirements.txt')
+    requirements = Requirements('https://raw.githubusercontent.com/', 'openstack/glance/', 'master/', 'requirements.txt')
