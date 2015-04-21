@@ -1,0 +1,439 @@
+# This file contains a list of 'end' packages for debtree
+# By default debtree will not display any dependencies of 'end' packages
+# which helps to limit the size and complexity of dependency graphs.
+#
+# This file is ignored when debtree is used to search for dependency paths
+# between two packages.
+#
+# Note: the intention is to eventually make debtree smart enough to
+# automatically limit the size of graphs or to automtically create
+# sub graphs, without the need for manually maintained lists.
+#
+# This file can be overruled on a per-user basis by creating a directory
+# ~/.debtree/ and adding a custom version of this file there.
+# List one or more packages per line (separated by spaces or tabs).
+# Comments after package names are allowed.
+
+# Basic general packages
+sysvinit
+passwd
+gnupg
+procmail
+logrotate
+gettext
+
+# Perl/Python
+perl
+python python-minimal python:any python-all
+python2.4 python2.5 python2.6 python2.7
+python-argparse
+python-support
+python-all-dev
+
+# Basic Debian packages & package management
+dpkg
+apt
+aptitude
+debconf cdebconf
+module-assistant
+ucf
+po-debconf
+python-dev-all
+
+# Development
+gcc
+c-compiler
+cmake
+subversion
+tla
+git git-core
+mercurial
+
+# Common build dependencies
+debhelper
+debiandoc-sgml
+docbook-utils
+
+# Libraries
+libglib2.0-0
+libsdl1.2debian
+
+# Development libraries
+libsdl1.2-dev
+libssl-dev
+libx11-dev
+zlib1g-dev
+
+# KDE development libraries
+libqt4-dev
+kdebase-workspace-dev
+
+# Common (complex) server applications
+exim4
+postfix
+apache2
+mysql-server mysql-client
+postgresql postgresql-client
+openssh-client
+
+# X.Org
+x11-common
+x11-utils
+xfonts-base xfonts-utils
+xbase-clients
+xserver-xorg
+xserver-xorg-video-all xserver-xorg-input-all
+xutils
+
+# Common desktop
+alsa-base
+dictionaries-common
+fontconfig libfontconfig1
+defoma
+dbus
+hal
+libfam0
+libnotify1
+libxine1
+pm-utils
+policykit
+samba-common smbclient libsmbclient
+
+# Java
+default-jre default-jre-headless
+openjdk-6-jre
+java-gcj-compat
+gcj-jre
+gij
+
+# KDE
+libqt-rnt
+libqt3-mt
+libqtcore4
+libqtgui4
+libqt4-designer
+libqt4-sql
+kdebase-runtime
+kdelibs4c2a
+kdelibs5
+libarts1c2a
+libkdepim1a
+libkdepim4
+kdebase-kio-plugins
+kdepim-kio-plugins
+kdesktop
+kcontrol
+kaddressbook
+soprano-daemon
+
+# Gnome
+libgnome2-0
+libgnomeui-0
+libgnomevfs2-0
+libgtk2.0-0
+gconf2
+gksu
+
+# Tex
+tex-common
+tetex-base
+texlive
+texlive-base-bin
+texlive-latex-recommended
+texlive-latex-extra
+texlive-fonts-recommended
+
+# Various
+foomatic-filters
+graphviz
+gs-common gv
+hyperestraier
+openoffice.org-core
+xml-core
+xpdf-reader
+tzdata
+ca-certificates
+wget
+libwww-perl
+libgmp10
+ieee-data
+libssl1.0.0
+# This file contains a list of 'skip' packages for debtree
+# By default debtree will completely ignore 'skip' packages: they, and their
+# dependencies will not be displayed on graphs.
+#
+# This file is ignored when debtree is used to search for dependency paths
+# between two packages.
+#
+# This file can be overruled on a per-user basis by creating a directory
+# ~/.debtree/ and adding a custom version of this file there.
+# List one or more packages per line (separated by spaces or tabs).
+# Comments after package names are allowed.
+
+# Very basic libraries
+libc6
+libgcc1
+libstdc++6
+zlib1g
+libx11-6
+multiarch-support
+
+# Extremely basic development libraries
+libc-dev
+libc6-dev
+atop
+beanstalkc
+blinker
+codespeak-lib
+d2to1
+device-tree-compiler
+dnsmasq
+eyes.js
+fence-agents
+flask
+gyp
+ieee-data
+less.js
+libjs-qunit
+libjs-swfobject
+libmemcached
+libqb
+librabbitmq
+libseccomp
+libsmi
+logrotate
+lshell
+node-clean-css
+node-contextify
+node-cssom
+node-diff
+node-growl
+node-htmlparser
+node-inherits
+node-jsdom
+node-lru-cache
+node-npmlog
+node-once
+node-optimist
+node-semver
+node-sigmund
+node-wordwrap
+openstack-pkg-tools
+openvswitch
+pep8
+prettytable
+pyflakes
+pylibmc
+pymongo
+pytest
+python-anyjson
+python-babel
+python-changelog
+python-concurrent.futures
+python-coverage
+python-croniter
+python-crypto
+python-decorator
+python-django-bootstrap-form
+python-ethtool
+python-extras
+python-fixtures
+python-flake8
+python-greenlet
+python-happybase
+python-hp3parclient
+python-hplefthandclient
+python-httplib2
+python-httpretty
+python-iso8601
+python-itsdangerous
+python-json-patch
+python-jsonpath-rw
+python-json-pointer
+python-jsonrpclib
+python-jsonschema
+python-lesscpy
+python-librabbitmq
+python-logutils
+python-mccabe
+python-mock
+python-mox3
+python-nose-testconfig
+python-oauthlib
+python-pushy
+python-pysnmp4
+python-scripttest
+python-setuptools-git
+python-sure
+python-testscenarios
+python-testtools
+python-thrift
+python-urllib3
+python-warlock
+python-webob
+python-wsme
+queue-async
+ruby-mixlib-log
+seabios
+smash
+sphinx-paramlinks
+spice-protocol
+subunit
+testrepository
+twitter-bootstrap
+usbredir
+vows
+websocket-client
+cliff-tablib
+corosync
+dbconfig-common
+debootstrap
+dnspython
+euca2ools
+facter
+gem2deb
+ipset
+ipxe
+kombu
+leveldb
+libusbx
+mako
+mongodb
+monit
+novnc
+openssl
+percona-toolkit
+percona-xtrabackup
+puppet
+pycryptopp
+pysendfile
+python2.7
+python-defaults
+python-ecdsa
+python-pip
+pyzmq
+qpid-python
+ruby-mixlib-cli
+ruby-rgen
+ruby-stomp
+sheepdog
+simplejson
+spice
+spice-html5
+tgt
+webtest
+xen
+zabbix
+
+python-chardet
+python-mox
+python-requests
+pyopenssl
+libvirt
+libvirt-python
+python-memcache
+python-networkx
+requests
+python-prettytable
+prettytable
+python-mako
+mako
+subunit
+python-subunit
+python-ldap
+python-lxml
+python-pam
+python-passlib
+python-testrepository
+testrepository
+libjs-sphinxdoc
+python-lockfile
+python-simplegeneric
+simplegeneric
+webtest
+python-webtest
+pymongo
+python-pymongo
+python-configobj
+python-tz
+python-paste
+python-pastedeploy
+python-routes
+python-setuptools
+python-sphinx
+python-yaml
+python-pkg-resources
+python-tempita
+python-markupsafe
+python-openssl
+pyopenssl
+pyparsing
+python-pyparsing
+python-pyudev
+pyudev
+# Version in Ubuntu 14.04
+# 3.3.1-1ubuntu6
+# Version in OSCI: 3.3.0-2ubuntu2~cloud1
+simplejson
+python-simplejson
+# Upstream versions have been used since ever
+python-pyasn1
+python-suds
+python-distutils-extra
+sqlite3
+python-feedparser
+python-jinja2
+python-amqplib
+# Upstream version has been used since ever
+libapache2-mod-wsgi
+libmysqlclient18
+curl
+python-xattr
+python-futures
+sudo
+python-docutils
+python-m2crypto
+adduser
+python-numpy
+python-cloudfiles
+libjs-jquery
+libpcre3
+# Provided by python 2.7
+python-wsgiref
+# virtual package provided by python-pysnmp4
+python-pysnmp2
+# python 2.6 compatibility
+python-ordereddict
+# virtual package provided by openstack-dashboard
+sahara-dashboard
+# Backported from Ubuntu 14.04
+python-flask
+python-dnspython
+python-psutil
+httpd
+
+# System
+awk
+base-files
+python2.7:any
+qemu-utils
+sysv-rc
+file-rc
+python-django
+rsync
+udev
+debconf-2.0
+util-linux
+openvswitch-switch
+qemu-system
+open-iscsi
+libvirt-bin
+python-libvirt
+vlan
+parted
+ebtables
+kvm
+conntrack
+iptables
+kpartx
+genisoimage
