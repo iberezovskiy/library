@@ -538,22 +538,6 @@ If not specified, the module will use whatever service name is the default for y
 #####`restart`
 Specifies whether the service should be restarted on config changes. Default: 'true'
 
-#####`create_admin`
-Allows to create admin user for admin database.
-Redefine this parameters if needed:
-
-* `admin_username`
-- Administrator user name
-
-* `admin_password`
-- Administrator user password
-
-* `admin_roles`
-- Administrator user roles
-
-#####`create_mongo_rc`
-Store admin credentials in mongorc.js file. Uses with `create_admin` parameter
-
 ### Definitions
 
 #### Definition: mongodb:db
