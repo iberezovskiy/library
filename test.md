@@ -542,14 +542,14 @@ Specifies whether the service should be restarted on config changes. Default: 't
 Allows to create admin user for admin database.
 Redefine this parameters if needed:
 
-* `admin_username`
-- Administrator user name
+#####`admin_username`
+Administrator user name
 
-* `admin_password`
-- Administrator user password
+#####`admin_password`
+Administrator user password
 
-* `admin_roles`
-- Administrator user roles
+#####`admin_roles`
+Administrator user roles
 
 #####`create_mongo_rc`
 Store admin credentials in mongorc.js file. Uses with `create_admin` parameter
