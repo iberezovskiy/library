@@ -1,22 +1,14 @@
 FROM ubuntu:xenial
 
 ARG jenkins_swarm_client_version="2.2"
-ARG username
-ARG password
 ARG name="jenkins_swarm_slave"
-ARG executors="1"
-ARG jenkins_master="http://172.18.248.120:8080/jenkins"
 ARG fsroot="/home/jenkins"
 ARG log_file="/var/log/swarm-client.log"
 ARG container_user="jenkins"
 ARG labels="docker"
 
 ENV JENKINS_SWARM_CLIENT_VERSION $jenkins_swarm_client_version
-ENV USERNAME $username
-ENV PASSWORD $password
 ENV NAME $name
-ENV EXECUTORS $executors
-ENV JENKINS_MASTER $jenkins_master
 ENV FSROOT $fsroot
 ENV LOG_FILE $log_file
 ENV CONTAINER_USER $container_user
@@ -78,9 +70,6 @@ RUN wget https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-clien
 swarm-client-${JENKINS_SWARM_CLIENT_VERSION}-jar-with-dependencies.jar -P ${FSROOT}
 RUN chown ${CONTAINER_USER}:${CONTAINER_USER} ${FSROOT}/swarm-client-${JENKINS_SWARM_CLIENT_VERSION}-jar-with-dependencies.jar
 
-RUN echo "su - ${CONTAINER_USER} -c 'java -jar ${FSROOT}/swarm-client-${JENKINS_SWARM_CLIENT_VERSION}-jar-with-dependencies.jar \
+CMD java -jar ${FSROOT}/swarm-client-${JENKINS_SWARM_CLIENT_VERSION}-jar-with-dependencies.jar \
 -name ${NAME} -labels ${LABELS} -executors ${EXECUTORS} -username ${USERNAME} -password ${PASSWORD} \
--fsroot ${FSROOT} -master ${JENKINS_MASTER} -disableSslVerification &> ${LOG_FILE}'" > /etc/init.d/jenkins-slave
-RUN chmod +x /etc/init.d/jenkins-slave
-
-CMD /etc/init.d/jenkins-slave
+-fsroot ${FSROOT} -master ${JENKINS_MASTER} -disableSslVerification &> ${LOG_FILE}
