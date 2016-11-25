@@ -1,0 +1,4 @@
+Explanation: ansible
+Package: ansible
+Pin: version 2.1.2.0-1ppa~xenial
+Pin-Priority: 1000
