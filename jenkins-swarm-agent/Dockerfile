@@ -9,7 +9,7 @@ ARG jenkins_master="http://172.18.248.120:8080/jenkins"
 ARG fsroot="/home/jenkins"
 ARG log_file="/var/log/swarm-client.log"
 ARG container_user="jenkins"
-ARG labels="ccp"
+ARG labels="docker"
 
 ENV JENKINS_SWARM_CLIENT_VERSION $jenkins_swarm_client_version
 ENV USERNAME $username
@@ -60,17 +60,18 @@ dist-upgrade --allow-downgrades
 
 RUN apt-get install --no-install-recommends ${PACKAGES_LIST} -y --force-yes
 
+# Install docker
+RUN apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys F76221572C52609D
+RUN echo 'deb https://apt.dockerproject.org/repo ubuntu-xenial main' | tee /etc/apt/sources.list.d/docker.list
+RUN apt-get update
+RUN apt-get install --no-install-recommends docker-engine -y --force-yes
+
 # User
 RUN useradd -m -d ${FSROOT} -s /bin/bash -c "${CONTAINER_USER}" -U ${CONTAINER_USER}
 RUN echo "${CONTAINER_USER} ALL=(root) NOPASSWD: ALL" > /etc/sudoers.d/10_${CONTAINER_USER}
-RUN usermod -a -G libvirtd,kvm ${CONTAINER_USER}
+RUN usermod -a -G libvirtd,kvm,docker ${CONTAINER_USER}
 RUN touch ${LOG_FILE}
 RUN chown ${CONTAINER_USER}:${CONTAINER_USER} ${LOG_FILE}
-
-# Skipped:
-# calico_tests.yml
-# k8s_tests.yml
-# ldap.yml
 
 # Slave jar
 RUN wget https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/${JENKINS_SWARM_CLIENT_VERSION}/\
